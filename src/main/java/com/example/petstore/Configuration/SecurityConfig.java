@@ -4,15 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; // ✨ NEW IMPORT
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import com.example.petstore.Configuration.JwtAuthFilter;
 
 import java.util.Arrays;
 
@@ -22,7 +24,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthFilter jwtAuthFilter; // ✨ 1. INJECT THE NEW FILTER HERE
+    private JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,25 +33,30 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Keeps React happy
+                        // 1. Always allow pre-flight OPTIONS requests for React
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // ✨ FIX: Added "/api/payment/**" to the end of this list
+                        // 2. Public Endpoints (No Token Required)
                         .requestMatchers(
-                                "/api/vendors/send-otp",
-                                "/api/vendors/verify-login",
-                                "/api/vendors/signup",
-                                "/api/users/login",
-                                "/api/users/signup",
+                                "/api/auth/**",
+                                "/api/vendors/**",
                                 "/api/users/**",
                                 "/api/pets/**",
-                                "/ws-chat/**",
+                                "/api/stories/all", // Public can read stories
                                 "/api/reviews/pet/**",
-                                "/api/payment/**"        // <--- Add this right here!
+                                "/ws-chat/**"
                         ).permitAll()
+
+                        // 3. Protected Endpoints (Token Required)
+                        // ✨ Moving 'stories/add' here ensures only logged-in users like Poola can post
+                        .requestMatchers("/api/stories/add").authenticated()
+                        .requestMatchers("/api/journal/**").authenticated()
+                        .requestMatchers("/api/payment/**").authenticated()
+                        .requestMatchers("/api/invoices/**").authenticated()
+                        .requestMatchers("/api/notifications/**").authenticated()
 
                         .anyRequest().authenticated()
                 )
-                // ✨ 2. ADD THE FILTER HERE (Checks the JWT before throwing a 403 error)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -58,12 +65,23 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://127.0.0.1:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With"));
-        configuration.setAllowCredentials(true);
 
+        // ✨ Fixed Origin list
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://127.0.0.1:3000", "http://192.168.1.8:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // ✨ Consolidated Headers to prevent 403 Preflight errors
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "Accept",
+                "X-Requested-With",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
+        ));
+
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // Cache preflight for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
