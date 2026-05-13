@@ -56,4 +56,94 @@ public class PetReview {
     protected void onUpdate() {
         this.updatedDate = LocalDateTime.now();
     }
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getPetId() {
+		return petId;
+	}
+
+	public void setPetId(String petId) {
+		this.petId = petId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getVendorId() {
+		return vendorId;
+	}
+
+	public void setVendorId(String vendorId) {
+		this.vendorId = vendorId;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public LocalDateTime getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(LocalDateTime updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+    
+    
 }

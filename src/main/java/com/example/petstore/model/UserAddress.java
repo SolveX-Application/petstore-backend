@@ -63,4 +63,119 @@ public class UserAddress {
             this.endDate = LocalDate.of(9999, 12, 31); // Sets to 31-Dec-9999
         }
     }
+
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getAltMobile() {
+		return altMobile;
+	}
+
+	public void setAltMobile(String altMobile) {
+		this.altMobile = altMobile;
+	}
+
+	public String getHouseDetails() {
+		return houseDetails;
+	}
+
+	public void setHouseDetails(String houseDetails) {
+		this.houseDetails = houseDetails;
+	}
+
+	public String getAreaLocality() {
+		return areaLocality;
+	}
+
+	public void setAreaLocality(String areaLocality) {
+		this.areaLocality = areaLocality;
+	}
+
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getAddressType() {
+		return addressType;
+	}
+
+	public void setAddressType(String addressType) {
+		this.addressType = addressType;
+	}
+
+	public LocalDate getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(LocalDate beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+    
+    
+    
 }

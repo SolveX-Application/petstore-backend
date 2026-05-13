@@ -23,7 +23,7 @@ public class AddressService {
     }
 
     public UserAddress saveOrUpdateAddress(String userId, UserAddress newAddress) {
-        UserAddress addressToSave;
+        UserAddress addressToSave; 
 
         // Check if we are updating an existing address using addressId
         if (newAddress.getAddressId() != null && !newAddress.getAddressId().trim().isEmpty()) {
