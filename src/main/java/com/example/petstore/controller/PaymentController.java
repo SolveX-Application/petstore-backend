@@ -19,7 +19,7 @@ public class PaymentController {
     public ResponseEntity<?> createOrder(@RequestBody Map<String, Object> data) {
         try {
             // ✨ FIXED: Added your actual Test API Keys here
-            RazorpayClient client = new RazorpayClient("rzp_test_SaGKXWItyTOgJv", "Io3xRhO7QPqJMb7GdDe1w1eR");
+            RazorpayClient client = new RazorpayClient("", "");
 
             JSONObject orderRequest = new JSONObject();
 
