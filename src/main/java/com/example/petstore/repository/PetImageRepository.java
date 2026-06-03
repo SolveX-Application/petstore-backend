@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PetImageRepository extends JpaRepository<PetImage, String> {
+public interface PetImageRepository extends JpaRepository<PetImage, Long> {
 
     /**
      * Finds all images associated with a specific Pet ID.
